@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CUN.DiploGrados.Application.Interface;
 using Microsoft.AspNetCore.Mvc;
-using CUN.DiploGrados.Application.DTO;
-using CUN.DiploGrados.Application.Interface;
-using System.Threading.Tasks;
 
 namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
 {
@@ -10,12 +7,12 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0", Deprecated = true)]
-    public class CustomersController : Controller
+    public class StudentsController : Controller
     {
         private readonly IStudentsApplication _studentsApplication;
-        public CustomersController(IStudentsApplication customersApplication)
+        public StudentsController(IStudentsApplication studentApplication)
         {
-            _studentsApplication = customersApplication;
+            _studentsApplication = studentApplication;
         }
 
         [HttpGet("GetStudentById/{customerId}")]
