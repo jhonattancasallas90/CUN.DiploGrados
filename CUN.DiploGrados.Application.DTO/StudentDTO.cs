@@ -225,6 +225,6 @@ namespace CUN.DiploGrados.Application.DTO
         public string PRINCIPAL_MOTIVACION_CONTINUAR_ESTUDIOS { get; set; }
 
         [JsonPropertyName("INST_EDUCATIVA_CONSIDERO_ANTES_QUE_CUN")]
-        public string INST_EDUCATIVA_CONSIDERO_ANTES_QUE_CUN { get; set; }
+        public string InstEducativaConsideroAntesQueCUN { get; set; }
     }
 }

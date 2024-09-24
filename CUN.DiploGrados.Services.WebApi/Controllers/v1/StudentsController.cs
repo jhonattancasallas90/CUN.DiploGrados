@@ -1,5 +1,7 @@
 ﻿using CUN.DiploGrados.Application.Interface;
+using CUN.DiploGrados.Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
 {
@@ -15,16 +17,43 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
             _studentsApplication = studentApplication;
         }
 
-        [HttpGet("GetStudentById/{customerId}")]
-        public IActionResult GetStudentById(string customerId)
+        [HttpGet("GetStudentById/{studentId}")]
+        public IActionResult GetStudentById(string studentId)
         {
-            if (string.IsNullOrEmpty(customerId))
+            if (string.IsNullOrEmpty(studentId))
                 return BadRequest();
-            var response = _studentsApplication.GetStudentById(customerId);
+            var response = _studentsApplication.GetStudentById(studentId);
             if (response.IsSuccess)
                 return Ok(response);
 
             return BadRequest(response.Message);
         }
+
+        [HttpGet("GetStudentsByParameters/{studentId}/{codPrograma}")]
+        public IActionResult GetStudentsByParameters(string studentId, string codPrograma)
+        {
+            if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(codPrograma))
+                return BadRequest();
+            var response = _studentsApplication.GetStudentByParameters(studentId, codPrograma);
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response.Message);
+        }
+
+
+        //[HttpGet("GetDiploGradosServices/{studentId}/{codPrograma}")]
+        //public IActionResult GetDiploGradosServices(Students student)
+        //{
+        //    if (student == null)
+        //        return BadRequest();
+        //    var response = _studentsApplication.GetStudentByParameters(studentId, codPrograma);
+        //    if (response.IsSuccess)
+        //        return Ok(response);
+
+        //    return BadRequest(response.Message);
+        //}
+
+
     }
 }

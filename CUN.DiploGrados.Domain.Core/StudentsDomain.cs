@@ -18,5 +18,10 @@ namespace CUN.DiploGrados.Domain.Core
         {
             return _unitOfWork.Students.GetStudentById(studentId);
         }
+
+        public IEnumerable<Students> GetStudentByParameters(string studentId, string codPrograma) 
+        {
+            return _unitOfWork.Students.GetStudentByParameters(studentId, codPrograma);
+        }
     }
 }

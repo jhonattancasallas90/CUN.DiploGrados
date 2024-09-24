@@ -8,5 +8,7 @@ namespace CUN.DiploGrados.Domain.Interface
     public interface IStudentsDomain
     {
         IEnumerable<Students> GetStudentById(string studentId);
+
+        IEnumerable<Students> GetStudentByParameters(string studentId, string codPrograma);
     }
 }
