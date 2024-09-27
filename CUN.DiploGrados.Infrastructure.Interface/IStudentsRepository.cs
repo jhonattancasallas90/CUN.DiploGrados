@@ -8,7 +8,7 @@ namespace CUN.DiploGrados.Infrastructure.Interface
     public interface IStudentsRepository
     {
         IEnumerable<Students> GetStudentById(string studentId);
-
-        IEnumerable<Students> GetStudentByParameters(string studentId, string codPrograma);
+        Students GetStudentByParameters(string studentId, string codPrograma);
+        Payload GetGradeCertificates(string studentId, string codPrograma);
     }
 }

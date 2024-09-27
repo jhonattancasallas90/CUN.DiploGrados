@@ -42,17 +42,18 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
         }
 
 
-        //[HttpGet("GetDiploGradosServices/{studentId}/{codPrograma}")]
-        //public IActionResult GetDiploGradosServices(Students student)
-        //{
-        //    if (student == null)
-        //        return BadRequest();
-        //    var response = _studentsApplication.GetStudentByParameters(studentId, codPrograma);
-        //    if (response.IsSuccess)
-        //        return Ok(response);
+        [HttpGet("GetGradeCertificates/{studentId}/{codPrograma}")]
+        public IActionResult GetGradeCertificates(string studentId, string codPrograma)
+        {
+            if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(codPrograma))
+                return BadRequest();
 
-        //    return BadRequest(response.Message);
-        //}
+            var response = _studentsApplication.GetGradeCertificates(studentId, codPrograma);
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response.Message);
+        }
 
 
     }

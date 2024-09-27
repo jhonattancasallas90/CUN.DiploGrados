@@ -5,6 +5,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace CUN.DiploGrados.Infrastructure.Repository
 {
@@ -107,7 +108,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
         }
 
 
-        public IEnumerable<Students> GetStudentByParameters(string studentId, string codPrograma)
+        public Students GetStudentByParameters(string studentId, string codPrograma)
         {
             using (var connection = _context.CreateConnection())
             {
@@ -189,12 +190,95 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                      WHERE [NUM_IDENTIFICACION] = @NumIdentificacion
                         AND [COD_PERIODO] = @CodPrograma ";
 
-                var parameters = new { NumIdentificacion = studentId , CodPrograma = codPrograma };
+                var parameters = new { NumIdentificacion = studentId, CodPrograma = codPrograma };
 
-                var students = connection.Query<Students>(query, parameters);
+                var students = connection.QueryFirstOrDefault<Students>(query, parameters);
 
                 return students;
             }
+        }
+
+        public Payload GetGradeCertificates(string studentId, string codPrograma)
+        {
+            Payload payload = new Payload();
+            Students student = new Students();
+            string url = "https://digisign-backend.onrender.com/api/workflows/NewIntegration";
+            string gender = "Masculino";
+            string tipoIdentificacion = "TI";
+
+            try
+            {
+                student = GetStudentByParameters(studentId, codPrograma);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            if (student != null)
+            {
+                try
+                {
+                    if (student.GEN_TERCERO.ToUpper() == "F")
+                    {
+                        gender = "Femenino";
+                    }
+
+                    if (student.TIP_IDENTIFICACION.ToUpper() == "C")
+                    {
+                        tipoIdentificacion = "CC";
+                    }
+                    Guid guid = new Guid("5c0e5a08-1a5f-4f4b-99c7-c3fc8c57da27");
+                    payload.Guid = guid;
+                    payload.Student.Nombres = student.NOM_TERCERO + " " + student.SEG_NOMBRE;
+                    payload.Student.Apellidos = student.PRI_APELLIDO + " " + student.SEG_APELLIDO;
+                    payload.Student.NombresYApellidos = student.NOM_TERCERO + " " + student.SEG_NOMBRE + " " + student.PRI_APELLIDO + " " + student.SEG_APELLIDO;
+                    payload.Student.Genero = gender;
+                    payload.Student.Serie = string.Empty;
+                    payload.Student.Email = student.DIR_EMAIL;
+                    payload.Student.Identificacion = student.NUM_IDENTIFICACION;
+                    payload.Student.FechaCeremonia = DateTime.Now;                      // Parametrizar de acuerdo a la fecha de ceremonia estipulada
+                    payload.Student.CodigoPrograma = student.COD_UNIDAD;
+                    payload.Student.NombrePrograma = student.NOM_UNIDAD;
+                    payload.Student.Master.CodigoUnico = student.COD_PENSUM_LAURA;      // POR VALIDAR
+                    payload.Student.Master.Escuela = student.NOMBRE_ESCUELA;
+                    payload.Student.Master.Nombres = student.NOM_DEPENDENCIA;           // POR VALIDAR
+                    payload.Student.Master.GenTercero = student.GEN_TERCERO;
+                    payload.Student.Master.Email = student.DIR_EMAIL;
+                    payload.Student.Master.TipoDeDocumento = tipoIdentificacion;
+                    payload.Student.Master.TipoDeDocumentoActa = student.TIP_IDENTIFICACION;
+                    payload.Student.Master.DadoEn = student.MUNICIPIO_SEDE;
+                    payload.Student.Master.Snies = "Snies por determinar";              // Por validar
+                    payload.Student.Master.CarreraOTitulo = student.NOM_DEPENDENCIA;    // Por validar
+                    payload.Student.Master.Acta = "No existe columna";                  // No hay columna
+                    payload.Student.Master.Registro = "No existe columna";              // No hay columna
+                    payload.Student.Master.Folio = "No existe columna";                 // No hay columna
+                    payload.Student.Master.Libro = "No existe columna";                 // No hay columna
+                    payload.Student.Master.DiaTexto = DateTime.Now.ToString();          // Construir Helper para dia en texto
+                    payload.Student.Master.DiaNumero = DateTime.Now.Day;               
+                    payload.Student.Master.MesTexto = DateTime.Now.ToString();           // Construir Helper para dia en texto
+                    payload.Student.Master.MesNumero = DateTime.Now.Month;
+                    payload.Student.Master.AgnoNumero = DateTime.Now.Year;
+                    payload.Student.Master.AgnoTexto = DateTime.Now.Year.ToString();     // Construir Helper para dia en texto
+                    payload.Student.Master.Clave = student.NIVEL_FORMACION;             // Por validar porque aparece como comentario, se deja mostrando carrera
+                   
+                    payload.Student.FechaDiploma = DateTime.Now;                        // Parametrizar de acuerdo a la fecha de entrega diploma estipulada
+                    payload.Student.Tipo = student.MODALIDAD;                           // Por validar
+                    payload.Student.TipoDocumento = tipoIdentificacion;                 // Parametrizar de acuerdo a la fecha de ceremonia estipulada
+                    payload.Student.Tabla = "<table border='1'><tr><th>Columna 1</th><th>Columna 2</th><th>Columna 3</th></tr><tr><td>Fila 1, Columna 1</td><td>Fila 1, Columna 2</td><td>Fila 1, Columna 3</td></tr><tr><td>Fila 2, Columna 1</td><td>Fila 2, Columna 2</td><td>Fila 2, Columna 3</td></tr><tr><td>Fila 3, Columna 1</td><td>Fila 3, Columna 2</td><td>Fila 3, Columna 3</td></tr><tr><td>Fila 4, Columna 1</td><td>Fila 4, Columna 2</td><td>Fila 4, Columna 3</td></tr></table>";
+                    payload.Student.Texto = string.Empty;
+                    payload.Student.Texto2 = string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+
+
+
+            return payload;
         }
     }
 }

@@ -10,7 +10,9 @@ namespace CUN.DiploGrados.Application.Interface
     {
         Response<IEnumerable<StudentDTO>> GetStudentById(string studentId);
 
-        Response<IEnumerable<StudentDTO>> GetStudentByParameters(string studentId, string codProgram);
+        Response<StudentDTO> GetStudentByParameters(string studentId, string codProgram);
+
+        Response<PayloadDTO> GetGradeCertificates (string studentId, string codProgram);
 
     }
 }
