@@ -1,10 +1,14 @@
-﻿using CUN.DiploGrados.Domain.Entity;
+﻿using CUN.DiploGrados.Application.DTO;
+using CUN.DiploGrados.Domain.Entity;
 using CUN.DiploGrados.Infrastructure.Data;
 using CUN.DiploGrados.Infrastructure.Interface;
 using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 
 namespace CUN.DiploGrados.Infrastructure.Repository
@@ -198,10 +202,14 @@ namespace CUN.DiploGrados.Infrastructure.Repository
             }
         }
 
-        public Payload GetGradeCertificates(string studentId, string codPrograma)
+        public async Task<PayloadResponse> GetGradeCertificatesAsync(string studentId, string codPrograma)
         {
+            PayloadResponse response = new PayloadResponse();
             Payload payload = new Payload();
             Students student = new Students();
+            StudentsPayload studentPay = new StudentsPayload();
+            Master master = new Master();
+
             string url = "https://digisign-backend.onrender.com/api/workflows/NewIntegration";
             string gender = "Masculino";
             string tipoIdentificacion = "TI";
@@ -230,44 +238,70 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                     }
                     Guid guid = new Guid("5c0e5a08-1a5f-4f4b-99c7-c3fc8c57da27");
                     payload.Guid = guid;
-                    payload.Student.Nombres = student.NOM_TERCERO + " " + student.SEG_NOMBRE;
-                    payload.Student.Apellidos = student.PRI_APELLIDO + " " + student.SEG_APELLIDO;
-                    payload.Student.NombresYApellidos = student.NOM_TERCERO + " " + student.SEG_NOMBRE + " " + student.PRI_APELLIDO + " " + student.SEG_APELLIDO;
-                    payload.Student.Genero = gender;
-                    payload.Student.Serie = string.Empty;
-                    payload.Student.Email = student.DIR_EMAIL;
-                    payload.Student.Identificacion = student.NUM_IDENTIFICACION;
-                    payload.Student.FechaCeremonia = DateTime.Now;                      // Parametrizar de acuerdo a la fecha de ceremonia estipulada
-                    payload.Student.CodigoPrograma = student.COD_UNIDAD;
-                    payload.Student.NombrePrograma = student.NOM_UNIDAD;
-                    payload.Student.Master.CodigoUnico = student.COD_PENSUM_LAURA;      // POR VALIDAR
-                    payload.Student.Master.Escuela = student.NOMBRE_ESCUELA;
-                    payload.Student.Master.Nombres = student.NOM_DEPENDENCIA;           // POR VALIDAR
-                    payload.Student.Master.GenTercero = student.GEN_TERCERO;
-                    payload.Student.Master.Email = student.DIR_EMAIL;
-                    payload.Student.Master.TipoDeDocumento = tipoIdentificacion;
-                    payload.Student.Master.TipoDeDocumentoActa = student.TIP_IDENTIFICACION;
-                    payload.Student.Master.DadoEn = student.MUNICIPIO_SEDE;
-                    payload.Student.Master.Snies = "Snies por determinar";              // Por validar
-                    payload.Student.Master.CarreraOTitulo = student.NOM_DEPENDENCIA;    // Por validar
-                    payload.Student.Master.Acta = "No existe columna";                  // No hay columna
-                    payload.Student.Master.Registro = "No existe columna";              // No hay columna
-                    payload.Student.Master.Folio = "No existe columna";                 // No hay columna
-                    payload.Student.Master.Libro = "No existe columna";                 // No hay columna
-                    payload.Student.Master.DiaTexto = DateTime.Now.ToString();          // Construir Helper para dia en texto
-                    payload.Student.Master.DiaNumero = DateTime.Now.Day;               
-                    payload.Student.Master.MesTexto = DateTime.Now.ToString();           // Construir Helper para dia en texto
-                    payload.Student.Master.MesNumero = DateTime.Now.Month;
-                    payload.Student.Master.AgnoNumero = DateTime.Now.Year;
-                    payload.Student.Master.AgnoTexto = DateTime.Now.Year.ToString();     // Construir Helper para dia en texto
-                    payload.Student.Master.Clave = student.NIVEL_FORMACION;             // Por validar porque aparece como comentario, se deja mostrando carrera
-                   
-                    payload.Student.FechaDiploma = DateTime.Now;                        // Parametrizar de acuerdo a la fecha de entrega diploma estipulada
-                    payload.Student.Tipo = student.MODALIDAD;                           // Por validar
-                    payload.Student.TipoDocumento = tipoIdentificacion;                 // Parametrizar de acuerdo a la fecha de ceremonia estipulada
-                    payload.Student.Tabla = "<table border='1'><tr><th>Columna 1</th><th>Columna 2</th><th>Columna 3</th></tr><tr><td>Fila 1, Columna 1</td><td>Fila 1, Columna 2</td><td>Fila 1, Columna 3</td></tr><tr><td>Fila 2, Columna 1</td><td>Fila 2, Columna 2</td><td>Fila 2, Columna 3</td></tr><tr><td>Fila 3, Columna 1</td><td>Fila 3, Columna 2</td><td>Fila 3, Columna 3</td></tr><tr><td>Fila 4, Columna 1</td><td>Fila 4, Columna 2</td><td>Fila 4, Columna 3</td></tr></table>";
-                    payload.Student.Texto = string.Empty;
-                    payload.Student.Texto2 = string.Empty;
+
+                    studentPay.Nombres = student.NOM_TERCERO + " " + student.SEG_NOMBRE;
+                    studentPay.Apellidos = student.PRI_APELLIDO + " " + student.SEG_APELLIDO;
+                    studentPay.NombresYApellidos = student.NOM_TERCERO + " " + student.SEG_NOMBRE + " " + student.PRI_APELLIDO + " " + student.SEG_APELLIDO;
+                    studentPay.Genero = gender;
+                    studentPay.Serie = string.Empty;
+                    studentPay.Email = student.DIR_EMAIL;
+                    studentPay.Identificacion = student.NUM_IDENTIFICACION;
+                    studentPay.FechaCeremonia = DateTime.Now;                      // Parametrizar de acuerdo a la fecha de ceremonia estipulada
+                    studentPay.CodigoPrograma = student.COD_UNIDAD;
+                    studentPay.NombrePrograma = student.NOM_UNIDAD;
+
+                    master.CodigoUnico = student.COD_PENSUM_LAURA;      // POR VALIDAR
+                    master.Escuela = student.NOMBRE_ESCUELA;
+                    master.Nombres = student.NOM_DEPENDENCIA;           // POR VALIDAR
+                    master.GenTercero = student.GEN_TERCERO;
+                    master.Email = student.DIR_EMAIL;
+                    master.TipoDeDocumento = tipoIdentificacion;
+                    master.TipoDeDocumentoActa = student.TIP_IDENTIFICACION;
+                    master.DadoEn = student.MUNICIPIO_SEDE;
+                    master.Snies = "Snies por determinar";              // Por validar
+                    master.CarreraOTitulo = student.NOM_DEPENDENCIA;    // Por validar
+                    master.Acta = "No existe columna";                  // No hay columna
+                    master.Registro = "No existe columna";              // No hay columna
+                    master.Folio = "No existe columna";                 // No hay columna
+                    master.Libro = "No existe columna";                 // No hay columna
+                    master.DiaTexto = DateTime.Now.ToString();          // Construir Helper para dia en texto
+                    master.DiaNumero = DateTime.Now.Day;               
+                    master.MesTexto = DateTime.Now.ToString();           // Construir Helper para dia en texto
+                    master.MesNumero = DateTime.Now.Month;
+                    master.AgnoNumero = DateTime.Now.Year;
+                    master.AgnoTexto = DateTime.Now.Year.ToString();     // Construir Helper para dia en texto
+                    master.Clave = student.NIVEL_FORMACION;             // Por validar porque aparece como comentario, se deja mostrando carrera
+
+                    studentPay.Master = new Master[] { master }; // Envolver el objeto en un array
+                    studentPay.FechaDiploma = DateTime.Now;                        // Parametrizar de acuerdo a la fecha de entrega diploma estipulada
+                    studentPay.Tipo = student.MODALIDAD;                           // Por validar
+                    studentPay.TipoDocumento = tipoIdentificacion;                 // Parametrizar de acuerdo a la fecha de ceremonia estipulada
+                    studentPay.Tabla = "<table border='1'><tr><th>Columna 1</th><th>Columna 2</th><th>Columna 3</th></tr><tr><td>Fila 1, Columna 1</td><td>Fila 1, Columna 2</td><td>Fila 1, Columna 3</td></tr><tr><td>Fila 2, Columna 1</td><td>Fila 2, Columna 2</td><td>Fila 2, Columna 3</td></tr><tr><td>Fila 3, Columna 1</td><td>Fila 3, Columna 2</td><td>Fila 3, Columna 3</td></tr><tr><td>Fila 4, Columna 1</td><td>Fila 4, Columna 2</td><td>Fila 4, Columna 3</td></tr></table>";
+                    studentPay.Texto = string.Empty;
+                    studentPay.Texto2 = string.Empty;
+
+                    payload.Datos = new StudentsPayload[] { studentPay };
+                    payload.Emailkey = student.DIR_EMAIL;
+                    // Convertir el payload a JSON
+                    var jsonPayload = JsonSerializer.Serialize(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        // Enviar el payload al servicio
+                        HttpResponseMessage httpResponse = await httpClient.PostAsync(url, content);
+
+                        if (httpResponse.IsSuccessStatusCode)
+                        {
+                            // Leer la respuesta
+                            string jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+                            response = JsonSerializer.Deserialize<PayloadResponse>(jsonResponse);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error al llamar a la API: {httpResponse.StatusCode}");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -275,10 +309,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                 }
             }
 
-
-
-
-            return payload;
+            return response;
         }
     }
 }

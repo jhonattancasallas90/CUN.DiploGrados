@@ -16,7 +16,7 @@ namespace CUN.DiploGrados.Domain.Entity
         public DateTime FechaCeremonia { get; set; }
         public string CodigoPrograma { get; set; }
         public string NombrePrograma { get; set; }
-        public Master Master { get; set; }
+        public Master[] Master { get; set; }
         public DateTime FechaDiploma { get; set; }
         public string Tipo { get; set; }
         public string TipoDocumento { get; set; }

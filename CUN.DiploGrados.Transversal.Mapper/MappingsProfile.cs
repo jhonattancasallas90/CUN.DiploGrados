@@ -2,6 +2,8 @@
 using AutoMapper;
 using CUN.DiploGrados.Domain.Entity;
 using CUN.DiploGrados.Application.DTO;
+using CUN.DiploGrados.Application.DTO.ResponseDTO;
+using CUN.DiploGrados.Domain.Entity.Response;
 
 namespace CUN.DiploGrados.Transversal.Mapper
 {
@@ -10,8 +12,17 @@ namespace CUN.DiploGrados.Transversal.Mapper
         // Conexion entre el DTO y Entity o VSA(ReverseMap).
         public MappingsProfile()
         {
-            CreateMap<Students, StudentDTO>().ReverseMap();
-            CreateMap<Users, UsersDto>().ReverseMap();
+            CreateMap<MasterDTO, Master>().ReverseMap();
+            CreateMap<PayloadDTO, Payload>().ReverseMap();
+            CreateMap<PayloadResponseDTO, PayloadResponse>().ReverseMap();
+            CreateMap<StudentDTO, Students>().ReverseMap();
+            CreateMap<StudentsPayloadDTO, StudentsPayload>().ReverseMap();
+            CreateMap<UsersDto, Users>().ReverseMap();
+            CreateMap<DocumentJsonMetadataDTO, DocumentJsonMetadata>().ReverseMap();
+            CreateMap<DocumentsDTO, Documents>().ReverseMap();
+            CreateMap<PagesDTO, Pages>().ReverseMap();
+            CreateMap<ParticipantFlowDTO, ParticipantFlow>().ReverseMap();
+
 
             //CreateMap<Customers, CustomersDto>().ReverseMap()
             //    .ForMember(destination => destination.CustomerId, source => source.MapFrom(src => src.CustomerId))

@@ -27,7 +27,7 @@ namespace CUN.DiploGrados.Application.DTO
         public DateTime Modified { get; set; }
 
         [JsonPropertyName("documents")]
-        public DocumentsDTO Documents { get; set; }
+        public DocumentsDTO[] Documents { get; set; }
 
         [JsonPropertyName("degreeDate")]
         public DateTime? DegreeDate { get; set; }
@@ -39,7 +39,7 @@ namespace CUN.DiploGrados.Application.DTO
         public bool? SendAttachments { get; set; }
 
         [JsonPropertyName("participantFlowHeader")]
-        public ParticipantFlowHeaderDTO ParticipantFlow { get; set; }
+        public ParticipantFlowHeaderDTO[] ParticipantFlow { get; set; }
 
         [JsonPropertyName("emailGroupId")]
         public Guid? EmailGroupdId { get; set; }

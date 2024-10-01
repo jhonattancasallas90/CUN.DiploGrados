@@ -38,9 +38,9 @@ namespace CUN.DiploGrados.Application.DTO.ResponseDTO
         public string? Ceremony { get; set; }
 
         [JsonPropertyName("participantFlow")]                               // Validar que no presente complicaciones con el archivo JSON
-        public ParticipantFlowDTO ParticipantFlow { get; set; }
+        public ParticipantFlowDTO[] ParticipantFlow { get; set; }
 
         [JsonPropertyName("documentJsonMetadata")]
-        public DocumentJsonMetadataDTO DocumentJsonMetadata { get; set; }
+        public DocumentJsonMetadataDTO[] DocumentJsonMetadata { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CUN.DiploGrados.Domain.Interface
 {
@@ -11,6 +12,6 @@ namespace CUN.DiploGrados.Domain.Interface
 
         Students GetStudentByParameters(string studentId, string codPrograma);
 
-        Payload GetGradeCertificates(string studentId, string codPrograma);
+        Task<PayloadResponse> GetGradeCertificatesAsync(string studentId, string codPrograma);
     }
 }

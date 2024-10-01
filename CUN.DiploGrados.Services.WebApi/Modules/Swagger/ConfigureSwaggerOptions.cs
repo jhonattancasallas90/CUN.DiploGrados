@@ -48,7 +48,7 @@ namespace CUN.DiploGrados.Services.WebApi.Modules.Swagger
                 }
             };
 
-            if (description.IsDeprecated)
+            if (description.IsDeprecated)           // Localizado en los Controllers
             {
                 info.Description += "Esta versión de la API ha quedado obsoleta.";
             }

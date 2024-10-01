@@ -8,7 +8,7 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
     //[Authorize]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("1.0", Deprecated = false)]                 // Se reemplaza el valor de Deprecated, puesto a que es primera version disponible
     public class StudentsController : Controller
     {
         private readonly IStudentsApplication _studentsApplication;
@@ -54,7 +54,5 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
 
             return BadRequest(response.Message);
         }
-
-
     }
 }

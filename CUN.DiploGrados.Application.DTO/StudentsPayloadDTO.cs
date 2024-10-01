@@ -38,7 +38,7 @@ namespace CUN.DiploGrados.Application.DTO
         public string NombrePrograma { get; set; }
 
         [JsonPropertyName("master")]
-        public MasterDTO Master { get; set;}
+        public MasterDTO[] Master { get; set;}
 
         [JsonPropertyName("fechadiploma")]
         public DateTime FechaDiploma { get; set; }

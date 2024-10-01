@@ -12,7 +12,7 @@ namespace CUN.DiploGrados.Application.Interface
 
         Response<StudentDTO> GetStudentByParameters(string studentId, string codProgram);
 
-        Response<PayloadDTO> GetGradeCertificates (string studentId, string codProgram);
+        Response<PayloadResponseDTO> GetGradeCertificates (string studentId, string codProgram);
 
     }
 }

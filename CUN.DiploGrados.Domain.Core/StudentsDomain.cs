@@ -4,6 +4,7 @@ using CUN.DiploGrados.Infrastructure.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CUN.DiploGrados.Domain.Core
 {
@@ -24,9 +25,9 @@ namespace CUN.DiploGrados.Domain.Core
             return _unitOfWork.Students.GetStudentByParameters(studentId, codPrograma);
         }
 
-        public Payload GetGradeCertificates(string studentId, string codPrograma)
+        public async Task<PayloadResponse> GetGradeCertificatesAsync(string studentId, string codPrograma)
         {
-            return _unitOfWork.Students.GetGradeCertificates(studentId, codPrograma);
+            return await _unitOfWork.Students.GetGradeCertificatesAsync(studentId, codPrograma);
         }
     }
 }

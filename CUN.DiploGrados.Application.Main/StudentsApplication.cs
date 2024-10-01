@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CUN.DiploGrados.Application.DTO;
 using CUN.DiploGrados.Application.Interface;
+using CUN.DiploGrados.Domain.Entity;
 using CUN.DiploGrados.Domain.Interface;
 using CUN.DiploGrados.Transversal.Common;
 using System;
@@ -79,13 +80,13 @@ namespace CUN.DiploGrados.Application.Main
             return response;
         }
 
-        public Response<PayloadDTO> GetGradeCertificates(string studentId, string codProgram)
+        public Response<PayloadResponseDTO> GetGradeCertificates(string studentId, string codProgram)
         {
-            var response = new Response<PayloadDTO>();
+            Response<PayloadResponseDTO> response = new Response<PayloadResponseDTO>();
             try
             {
-                var payload = _studentsDomain.GetStudentByParameters(studentId, codProgram);
-                response.Data = _mapper.Map<PayloadDTO>(payload); // Mapear como colección
+                var payload = _studentsDomain.GetGradeCertificatesAsync(studentId, codProgram);
+                response.Data = _mapper.Map<PayloadResponseDTO>(payload); // Mapear como colección
 
                 if (response.Data != null) // Verificar que haya datos
                 {

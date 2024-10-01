@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CUN.DiploGrados.Application.DTO\CUN.DiploGrados.Application.DTO.csproj" />
     <ProjectReference Include="..\CUN.DiploGrados.Domain.Entity\CUN.DiploGrados.Domain.Entity.csproj" />
     <ProjectReference Include="..\CUN.DiploGrados.Domain.Interface\CUN.DiploGrados.Domain.Interface.csproj" />
     <ProjectReference Include="..\CUN.DiploGrados.Infrastructure.Interface\CUN.DiploGrados.Infrastructure.Interface.csproj" />
