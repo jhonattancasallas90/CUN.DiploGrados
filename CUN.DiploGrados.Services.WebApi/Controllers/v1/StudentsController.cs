@@ -17,6 +17,11 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
             _studentsApplication = studentApplication;
         }
 
+        /// <summary>
+        ///  Metodo para obtener la informacioó del estudiante por identificación
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <returns></returns>
         [HttpGet("GetStudentById/{studentId}")]
         public IActionResult GetStudentById(string studentId)
         {
@@ -29,6 +34,12 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
             return BadRequest(response.Message);
         }
 
+        /// <summary>
+        ///  Metodo para obtener la informacion del estudiante por Identificación y código de programa
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="codPrograma"></param>
+        /// <returns></returns>
         [HttpGet("GetStudentsByParameters/{studentId}/{codPrograma}")]
         public IActionResult GetStudentsByParameters(string studentId, string codPrograma)
         {
@@ -41,7 +52,12 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
             return BadRequest(response.Message);
         }
 
-
+        /// <summary>
+        ///  Método para obtener los certificados del tercero 
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="codPrograma"></param>
+        /// <returns></returns>
         [HttpGet("GetGradeCertificates/{studentId}/{codPrograma}")]
         public IActionResult GetGradeCertificates(string studentId, string codPrograma)
         {

@@ -202,12 +202,11 @@ namespace CUN.DiploGrados.Infrastructure.Repository
             }
         }
 
-        public async Task<PayloadResponse> GetGradeCertificatesAsync(string studentId, string codPrograma)
+        public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma)
         {
-            PayloadResponse response = new PayloadResponse();
             Payload payload = new Payload();
             Students student = new Students();
-            StudentsPayload studentPay = new StudentsPayload();
+            StudentsPayload studentPay = new StudentsPayload();             // <-- Esta tomando esta para la respuesta
             Master master = new Master();
 
             string url = "https://digisign-backend.onrender.com/api/workflows/NewIntegration";
@@ -281,7 +280,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                     studentPay.Texto2 = string.Empty;
 
                     payload.Datos = new StudentsPayload[] { studentPay };
-                    payload.Emailkey = student.DIR_EMAIL;
+                    payload.Emailkey = "email";
                     // Convertir el payload a JSON
                     var jsonPayload = JsonSerializer.Serialize(payload);
                     var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
@@ -295,7 +294,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                         {
                             // Leer la respuesta
                             string jsonResponse = await httpResponse.Content.ReadAsStringAsync();
-                            response = JsonSerializer.Deserialize<PayloadResponse>(jsonResponse);
+                            return payload;
                         }
                         else
                         {
@@ -309,7 +308,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                 }
             }
 
-            return response;
+            return payload;
         }
     }
 }

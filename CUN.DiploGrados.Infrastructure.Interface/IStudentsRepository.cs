@@ -11,6 +11,6 @@ namespace CUN.DiploGrados.Infrastructure.Interface
     {
         IEnumerable<Students> GetStudentById(string studentId);
         Students GetStudentByParameters(string studentId, string codPrograma);
-        Task<PayloadResponse> GetGradeCertificatesAsync(string studentId, string codPrograma);
+        Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma);
     }
 }

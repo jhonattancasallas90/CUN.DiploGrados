@@ -12,6 +12,6 @@ namespace CUN.DiploGrados.Domain.Interface
 
         Students GetStudentByParameters(string studentId, string codPrograma);
 
-        Task<PayloadResponse> GetGradeCertificatesAsync(string studentId, string codPrograma);
+        Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma);
     }
 }
