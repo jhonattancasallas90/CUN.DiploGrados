@@ -10,14 +10,14 @@ namespace CUN.DiploGrados.Infrastructure.Data
     public class DapperContext
     {
         private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        private readonly string _sqlString;
 
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = configuration.GetConnectionString("SqlServerConnection");
+            _sqlString = configuration.GetConnectionString("SqlServerConnection");
         }
 
-        public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
+        public IDbConnection CreateConnectionSql() => new SqlConnection(_sqlString);
     }
 }

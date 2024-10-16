@@ -21,6 +21,7 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
         ///  Metodo para obtener la informacioó del estudiante por identificación
         /// </summary>
         /// <param name="studentId"></param>
+        ///<param name="databaseType"></param>
         /// <returns></returns>
         [HttpGet("GetStudentById/{studentId}")]
         public IActionResult GetStudentById(string studentId)
@@ -39,6 +40,7 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
         /// </summary>
         /// <param name="studentId"></param>
         /// <param name="codPrograma"></param>
+        /// <param name="databaseType"></param>
         /// <returns></returns>
         [HttpGet("GetStudentsByParameters/{studentId}/{codPrograma}")]
         public IActionResult GetStudentsByParameters(string studentId, string codPrograma)
@@ -58,17 +60,38 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
         /// <param name="studentId"></param>
         /// <param name="codPrograma"></param>
         /// <returns></returns>
-        [HttpGet("GetGradeCertificates/{studentId}/{codPrograma}")]
-        public IActionResult GetGradeCertificates(string studentId, string codPrograma)
-        {
-            if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(codPrograma))
-                return BadRequest();
+        //[HttpGet("GetGradeCertificates/{studentId}/{codPrograma}")]
+        //public IActionResult GetGradeCertificates(string studentId, string codPrograma)
+        //{
+        //    if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(codPrograma))
+        //        return BadRequest("Los parámetros no pueden estar vacíos.");
 
-            var response = _studentsApplication.GetGradeCertificates(studentId, codPrograma);
+        //    var response = _studentsApplication.GetGradeCertificates(studentId, codPrograma);
+        //    if (response.IsSuccess)
+        //        return Ok(response.Data); // Asegúrate de devolver los datos correctos
+
+        //    return BadRequest(response.Message);
+        //}
+
+
+        /// <summary>
+        ///  Método para obtener los certificados del tercero 
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="nivel"></param>
+        /// <returns></returns>
+        [HttpGet("GetStudentGradeInfo/{studentId}")]
+        public IActionResult GetStudentGradeInfo(string studentId, string nivel)
+        {
+            if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(studentId))
+                return BadRequest("Los parámetros no pueden estar vacíos.");
+
+            var response = _studentsApplication.GetStudentsGradeInfo(studentId, nivel);
             if (response.IsSuccess)
-                return Ok(response);
+                return Ok(response.Data); // Asegúrate de devolver los datos correctos
 
             return BadRequest(response.Message);
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using CUN.DiploGrados.Domain.Entity;
+﻿using CUN.DiploGrados.Application.DTO;
+using CUN.DiploGrados.Domain.Entity;
 using CUN.DiploGrados.Domain.Interface;
 using CUN.DiploGrados.Infrastructure.Interface;
 using System;
@@ -20,14 +21,14 @@ namespace CUN.DiploGrados.Domain.Core
             return _unitOfWork.Students.GetStudentById(studentId);
         }
 
-        public Students GetStudentByParameters(string studentId, string codPrograma) 
+        public Students GetStudentByParameters(string studentId, string codPrograma)
         {
             return _unitOfWork.Students.GetStudentByParameters(studentId, codPrograma);
         }
 
-        public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma)
+        public StudentsGradeInfo GetStudentsGradeInfo(string studentId, string nivel)
         {
-            return await _unitOfWork.Students.GetGradeCertificatesAsync(studentId, codPrograma);
+            return _unitOfWork.Students.GetStudentGradeInfo(studentId, nivel);
         }
     }
 }

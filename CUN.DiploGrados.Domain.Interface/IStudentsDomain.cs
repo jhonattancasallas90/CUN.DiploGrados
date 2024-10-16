@@ -1,4 +1,5 @@
-﻿using CUN.DiploGrados.Domain.Entity;
+﻿using CUN.DiploGrados.Application.DTO;
+using CUN.DiploGrados.Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,6 @@ namespace CUN.DiploGrados.Domain.Interface
 
         Students GetStudentByParameters(string studentId, string codPrograma);
 
-        Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma);
+        StudentsGradeInfo GetStudentsGradeInfo(string studentId, string nivel);
     }
 }

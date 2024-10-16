@@ -30,9 +30,11 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
 
         [AllowAnonymous]
         [HttpPost("Authenticate")]
-        public IActionResult Authenticate([FromBody]UsersDto usersDto)
+        public IActionResult Authenticate([FromBody] UsersDto usersDto)
         {
+           
             var response = _usersApplication.Authenticate(usersDto.UserName, usersDto.Password);
+
             if (response.IsSuccess)
             {
                 if (response.Data != null)
@@ -41,7 +43,9 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
                     return Ok(response);
                 }
                 else
+                {
                     return NotFound(response);
+                }
             }
 
             return BadRequest(response);

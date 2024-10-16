@@ -19,7 +19,7 @@ namespace CUN.DiploGrados.Application.Main
 
         private readonly IAppLogger<StudentsApplication> _logger;
 
-        public StudentsApplication(IStudentsDomain studentDomain, IMapper mapper, IAppLogger<StudentsApplication> logger)
+          public StudentsApplication(IStudentsDomain studentDomain, IMapper mapper, IAppLogger<StudentsApplication> logger)
         {
             _studentsDomain = studentDomain;
             _mapper = mapper;
@@ -80,13 +80,14 @@ namespace CUN.DiploGrados.Application.Main
             return response;
         }
 
-        public Response<PayloadResponseDTO> GetGradeCertificates(string studentId, string codProgram)
+
+        public Response<StudentsGradeInfo> GetStudentsGradeInfo(string studentId, string nivel)
         {
-            Response<PayloadResponseDTO> response = new Response<PayloadResponseDTO>();
+            Response<StudentsGradeInfo> response = new Response<StudentsGradeInfo>();
             try
             {
-                var payload = _studentsDomain.GetGradeCertificatesAsync(studentId, codProgram);
-                response.Data = _mapper.Map<PayloadResponseDTO>(payload); // Mapear como colección
+                StudentsGradeInfo payload = _studentsDomain.GetStudentsGradeInfo(studentId, nivel);
+                response.Data = _mapper.Map<StudentsGradeInfo>(payload); // Mapear como colección
 
                 if (response.Data != null) // Verificar que haya datos
                 {
