@@ -9,9 +9,7 @@ namespace CUN.DiploGrados.Domain.Interface
     public interface IStudentsDomain
     {
         IEnumerable<Students> GetStudentById(string studentId);
-
         Students GetStudentByParameters(string studentId, string codPrograma);
-
-        Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma);
+        StudentsGradeInfo GetStudentsGradeInfo(string studentId, string nivel);
     }
 }

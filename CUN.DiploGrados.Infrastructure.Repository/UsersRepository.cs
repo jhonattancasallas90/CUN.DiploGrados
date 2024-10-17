@@ -17,7 +17,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
         }
         public Users Authenticate(string userName, string password)
         {
-            using (var connection = _context.CreateConnection())
+            using (var connection = _context.CreateConnectionSql())
             {
                 var query = "UsersGetByUserAndPassword";
                 var parameters = new DynamicParameters();

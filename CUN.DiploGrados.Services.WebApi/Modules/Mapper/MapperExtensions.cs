@@ -13,6 +13,7 @@ namespace CUN.DiploGrados.Services.WebApi.Modules.Mapper
             {
                 mc.AddProfile(new MappingsProfile());
             });
+
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
             

@@ -25,9 +25,9 @@ namespace CUN.DiploGrados.Domain.Core
             return _unitOfWork.Students.GetStudentByParameters(studentId, codPrograma);
         }
 
-        public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma)
+        public StudentsGradeInfo GetStudentsGradeInfo(string studentId, string nivel)
         {
-            return await _unitOfWork.Students.GetGradeCertificatesAsync(studentId, codPrograma);
+            return _unitOfWork.Students.GetStudentGradeInfo(studentId, nivel);
         }
     }
 }

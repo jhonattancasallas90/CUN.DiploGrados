@@ -8,6 +8,7 @@ using CUN.DiploGrados.Services.WebApi.Modules.Mapper;
 using CUN.DiploGrados.Services.WebApi.Modules.Swagger;
 using CUN.DiploGrados.Services.WebApi.Modules.Validator;
 using CUN.DiploGrados.Services.WebApi.Modules.Versioning;
+using CUN.DiploGrados.Transversal.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
