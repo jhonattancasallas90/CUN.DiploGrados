@@ -18,7 +18,6 @@ namespace CUN.DiploGrados.Services.WebApi.Modules.Injection
         {
             services.AddSingleton<IConfiguration>(configuration);
             services.AddSingleton<DapperContext>();
-            services.AddSingleton<DapperOracleContext>();
             services.AddScoped<IStudentsApplication, StudentsApplication>();
             services.AddScoped<IStudentsRepository, StudentsRepository>();
             services.AddScoped<IStudentsDomain, StudentsDomain>();
