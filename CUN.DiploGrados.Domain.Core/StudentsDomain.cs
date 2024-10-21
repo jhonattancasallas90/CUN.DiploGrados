@@ -29,5 +29,16 @@ namespace CUN.DiploGrados.Domain.Core
         {
             return _unitOfWork.Students.GetStudentGradeInfo(studentId, nivel);
         }
+
+        public Master GetTemplateType(string opcion)
+        {
+            return _unitOfWork.Students.GetTemplateType(opcion);
+        }
+
+        public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma, string nivel, string opcion)
+        {
+            // Utilizamos await para esperar el resultado del método asíncrono
+            return await _unitOfWork.Students.GetGradeCertificatesAsync(studentId, codPrograma, nivel, opcion);
+        }
     }
 }

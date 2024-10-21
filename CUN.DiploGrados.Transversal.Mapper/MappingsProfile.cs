@@ -17,6 +17,9 @@ namespace CUN.DiploGrados.Transversal.Mapper
             CreateMap<PayloadResponse, PayloadResponseDTO>().ReverseMap();
             CreateMap<Students, StudentDTO>().ReverseMap();
             CreateMap<StudentsPayload, StudentsPayloadDTO>().ReverseMap();              // POR REVISAR FUNCIONALIDAD DE MAPEO, SI NO ES NECESARIO, ELIMINAR
+            CreateMap<StudentGradePayload, StudentGradePayloadDTO>().ReverseMap();
+            
+            CreateMap<StudentsGradeInfo, StudentsGradesDTO>().ReverseMap();
             CreateMap<Users, UsersDto>().ReverseMap();
 
             CreateMap<DocumentJsonMetadata, DocumentJsonMetadataDTO>().ReverseMap();
@@ -24,8 +27,6 @@ namespace CUN.DiploGrados.Transversal.Mapper
             CreateMap<Pages, PagesDTO>().ReverseMap();
             CreateMap<ParticipantFlow, ParticipantFlowDTO>().ReverseMap();
 
-            CreateMap<StudentsGradeInfo, StudentsGradesDTO>().ReverseMap();
-            CreateMap<StudentGradePayload, StudentGradePayloadDTO>().ReverseMap();
 
             //CreateMap<Customers, CustomersDto>().ReverseMap()
             //    .ForMember(destination => destination.CustomerId, source => source.MapFrom(src => src.CustomerId))

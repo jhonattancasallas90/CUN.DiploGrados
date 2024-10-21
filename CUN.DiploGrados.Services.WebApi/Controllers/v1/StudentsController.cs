@@ -1,4 +1,5 @@
 ﻿using CUN.DiploGrados.Application.Interface;
+using CUN.DiploGrados.Application.Main;
 using CUN.DiploGrados.Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -73,22 +74,54 @@ namespace CUN.DiploGrados.Services.WebApi.Controllers.v1
 
 
         /// <summary>
+        ///  Método para obtener las opciones disponibles de plantilla :  1)grados 2)duplicado 3)honoresCausa"
+        /// </summary>
+        /// <param name="opcion"></param>
+        /// <returns></returns>
+        [HttpGet("GetTemplateType/{opcion}")]
+        public IActionResult GetTemplateType(string opcion)
+        {
+            var resultado = _studentsApplication.GetTemplateType(opcion);
+            return Ok(new { mensaje = resultado });
+        }
+
+        /// <summary>
         ///  Método para obtener los certificados del tercero 
         /// </summary>
         /// <param name="studentId"></param>
         /// <param name="codPrograma"></param>
         /// <returns></returns>
-        //[HttpGet("GetGradeCertificates/{studentId}/{codPrograma}")]
-        //public IActionResult GetGradeCertificates(string studentId, string codPrograma)
-        //{
-        //    if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(codPrograma))
-        //        return BadRequest();
+        [HttpGet("GetGradeCertificates/{studentId}/{codPrograma}")]
+        public async Task<IActionResult> GetGradeCertificates(string studentId, string codPrograma, string nivel, string opcion)
+        {
+            // Validación de entrada
+            if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(codPrograma) || string.IsNullOrEmpty(nivel) || string.IsNullOrEmpty(opcion))
+                return BadRequest("Ingrese los parametros para generar la consulta");
 
-        //    var response = _studentsApplication.GetGradeCertificates(studentId, codPrograma);
-        //    if (response.IsSuccess)
-        //        return Ok(response);
+            try
+            {
+                // Llamada al servicio asíncrono
+                var response = await _studentsApplication.GetGradeCertificatesAsync(studentId, codPrograma, nivel, opcion);
 
-        //    return BadRequest(response.Message);
-        //}
+                // Si el servicio tuvo éxito, retornar la respuesta
+                if (response != null)  // Si la respuesta no es nula
+                    return Ok(response);
+
+                // Si la respuesta es nula o hubo algún error
+                return NotFound("No se encontraron datos para los parámetros proporcionados.");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores en caso de que el servicio falle
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }
+
+
+
+
+
+
+
