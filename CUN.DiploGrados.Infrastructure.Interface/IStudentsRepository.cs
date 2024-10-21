@@ -10,7 +10,7 @@ namespace CUN.DiploGrados.Infrastructure.Interface
     public interface IStudentsRepository
     {
         IEnumerable<Students> GetStudentById(string studentId);
-        Students GetStudentByParameters(string studentId, string codPrograma);
+        Students GetStudentByParameters(string codPrograma, string studentId);
         StudentsGradeInfo GetStudentGradeInfo(string studentId, string nivel);
         Master GetTemplateType(string opcion);
         Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma, string nivel, string opcion);

@@ -38,7 +38,28 @@ namespace CUN.DiploGrados.Application.DTO
 
         [JsonPropertyName("TIP_IDENTIFICACION")]
         public string TIP_IDENTIFICACION { get; set; }
-        public StudentsGradeInfo StudentGrade { get; set; }         // Acceso a la data complementaria de ORACLE
+        //public StudentsGradeInfo StudentGrade { get; set; }         // Acceso a la data complementaria de ORACLE
+
+        [JsonPropertyName("SEDE_GRADO")]
+        public string SEDE_GRADO { get; set; }          // Verificar que estos datos sean los correctos -   // Por validar para su integración
+
+        [JsonPropertyName("SNIES")]
+        public string SNIES { get; set; }               //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+
+        [JsonPropertyName("TITULACION")]
+        public string TITULACION { get; set; }          //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+
+        [JsonPropertyName("ACTA")]
+        public string ACTA { get; set; }                //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+
+        [JsonPropertyName("NRO_REGISTRO")]
+        public string NRO_REGISTRO { get; set; }        //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+
+        [JsonPropertyName("FOLIO")]
+        public string FOLIO { get; set; }               //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+
+        [JsonPropertyName("LIBRO")]
+        public string LIBRO { get; set; }
 
         //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 

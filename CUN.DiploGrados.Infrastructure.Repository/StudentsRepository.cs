@@ -72,7 +72,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                      WHERE [NUM_IDENTIFICACION] = @NumIdentificacion
                         AND [COD_PERIODO] = @CodPrograma ";
 
-                    var parameters = new { NumIdentificacion = studentId, CodPrograma = codPrograma };
+                    var parameters = new { CodPrograma = codPrograma, NumIdentificacion = studentId };
 
                     var students = connection.QueryFirstOrDefault<Students>(query, parameters);
 
@@ -255,44 +255,54 @@ namespace CUN.DiploGrados.Infrastructure.Repository
 
 
         // CodPrograma es equivalente a la columna PLAN
-public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma, string nivel, string opcion)
-{
-    Master tipoPlantilla = new Master();
-    Payload payload = new Payload();
-    Students student = null;
-    StudentsPayload studentPay = new StudentsPayload(); // Payload del estudiante
-    StudentsGradeInfo gradeInfo = null;
-
-    string url = "https://digisign-backend.onrender.com/api/workflows/NewIntegration";
-    string gender = "Masculino";
-    string tipoIdentificacion = "TI";
-
-    try
-    {
-        // Obtener los datos del estudiante y la información de grado
-        tipoPlantilla = GetTemplateType(opcion);
-        student = GetStudentByParameters(codPrograma, studentId);
-        gradeInfo = GetStudentGradeInfo(studentId, nivel);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error obteniendo datos: {ex.Message}");
-    }
-
-    if (student != null || gradeInfo != null)
-    {
-        try
+        public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma, string nivel, string opcion)
         {
-            // Ajustar el género y tipo de documento
-            if (student.GEN_TERCERO.ToUpper() == "F")
+            Master tipoPlantilla = new Master();
+            Payload payload = new Payload();
+            Students student = null;
+            StudentsPayload studentPay = new StudentsPayload(); // Payload del estudiante
+            StudentsGradeInfo gradeInfo = null;
+
+            string url = "https://digisign-backend.onrender.com/api/workflows/NewIntegration";
+            string gender = "Masculino";
+            string tipoIdentificacion = "TI";
+
+            try
             {
-                gender = "Femenino";
+                // Obtener los datos del estudiante y la información de grado
+                tipoPlantilla = GetTemplateType(opcion);
+                student = GetStudentByParameters(codPrograma, studentId);
+                gradeInfo = GetStudentGradeInfo(studentId, nivel);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error obteniendo datos: {ex.Message}");
+            }
+
+            if (student != null || gradeInfo != null)
+            {
+                try
+                {
+                    // Ajustar el género y tipo de documento
+                    if (student.GEN_TERCERO.ToUpper() == "F")
+                    {
+                        gender = "Femenino";
+                    }
+
+                    ////// Inicializar studentPay.StudentGrade si es null
+                    //if (studentPay.StudentGrade == null)
+                    //{
+                    //    studentPay.StudentGrade = new StudentsGradeInfo(); // Asegúrate de que esto es del tipo correcto
+                    //}
 
                     if (student.TIP_IDENTIFICACION.ToUpper() == "C")
                     {
                         tipoIdentificacion = "CC";
                     }
+
+                    Guid guid = new Guid("5c0e5a08-1a5f-4f4b-99c7-c3fc8c57da27");
+                    payload.Guid = guid;
+                    payload.Emailkey = "email";
 
                     // Asignar las propiedades generales del estudiante a studentPay
                     studentPay.Master = tipoPlantilla;
@@ -306,27 +316,17 @@ public async Task<Payload> GetGradeCertificatesAsync(string studentId, string co
                     studentPay.TipoDocumento = tipoIdentificacion;
                     studentPay.TipoDocumentoActa = student.TIP_IDENTIFICACION;
 
-                    // Inicializar studentPay.StudentGrade si es null
-                    if (studentPay.StudentGrade == null)
-                    {
-                        studentPay.StudentGrade = new StudentsGradeInfo(); // Asegúrate de que esto es del tipo correcto
-                    }
+
 
                     // Asignar la información específica de grado directamente a studentPay
-                    if (gradeInfo != null)
-                    {
-                        studentPay.StudentGrade.SEDE_GRADO = gradeInfo.SEDE_GRADO ?? "Dato no disponible";
-                        studentPay.StudentGrade.SNIES = gradeInfo.SNIES ?? "Dato no disponible";
-                        studentPay.StudentGrade.TITULACION = gradeInfo.TITULACION ?? "Dato no disponible";
-                        studentPay.StudentGrade.ACTA = gradeInfo.ACTA ?? "Dato no disponible";
-                        studentPay.StudentGrade.NRO_REGISTRO = gradeInfo.NRO_REGISTRO ?? "Dato no disponible";
-                        studentPay.StudentGrade.FOLIO = gradeInfo.FOLIO ?? "Dato no disponible";
-                        studentPay.StudentGrade.LIBRO = gradeInfo.LIBRO ?? "Dato no disponible";
-                    }
-                    else
-                    {
-                        Console.WriteLine("Información de grado no encontrada.");
-                    }
+
+                    studentPay.SEDE_GRADO = gradeInfo.SEDE_GRADO ?? "Dato no disponible";
+                    studentPay.SNIES = gradeInfo.SNIES ?? "Dato no disponible";
+                    studentPay.TITULACION = gradeInfo.TITULACION ?? "Dato no disponible";
+                    studentPay.ACTA = gradeInfo.ACTA ?? "Dato no disponible";
+                    studentPay.NRO_REGISTRO = gradeInfo.NRO_REGISTRO ?? "Dato no disponible";
+                    studentPay.FOLIO = gradeInfo.FOLIO ?? "Dato no disponible";
+                    studentPay.LIBRO = gradeInfo.LIBRO ?? "Dato no disponible";
 
                     // Asignar las fechas a studentPay
                     studentPay.DiaTexto = "veintitrés"; // Hardcoded
@@ -339,38 +339,38 @@ public async Task<Payload> GetGradeCertificatesAsync(string studentId, string co
                     // Asignar el payload
                     payload.Datos = new StudentsPayload[] { studentPay };
 
-            // Convertir el payload a JSON
-            var jsonPayload = JsonSerializer.Serialize(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                    // Convertir el payload a JSON
+                    var jsonPayload = JsonSerializer.Serialize(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            using (var httpClient = new HttpClient())
-            {
-                // Enviar el payload al servicio
-                HttpResponseMessage httpResponse = await httpClient.PostAsync(url, content);
+                    using (var httpClient = new HttpClient())
+                    {
+                        // Enviar el payload al servicio
+                        HttpResponseMessage httpResponse = await httpClient.PostAsync(url, content);
 
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    string jsonResponse = await httpResponse.Content.ReadAsStringAsync();
-                    return payload;
+                        if (httpResponse.IsSuccessStatusCode)
+                        {
+                            string jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+                            return payload;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error al llamar a la API: {httpResponse.StatusCode}");
+                        }
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"Error al llamar a la API: {httpResponse.StatusCode}");
+                    Console.WriteLine($"Error al procesar los datos: {ex.Message}");
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al procesar los datos: {ex.Message}");
-        }
-    }
-    else
-    {
-        Console.WriteLine("El estudiante o la información de grado son nulos.");
-    }
+            else
+            {
+                Console.WriteLine("El estudiante o la información de grado son nulos.");
+            }
 
-    return payload;
-}
+            return payload;
+        }
 
 
     }
