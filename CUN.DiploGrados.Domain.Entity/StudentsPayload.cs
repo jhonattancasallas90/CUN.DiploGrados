@@ -8,7 +8,7 @@ namespace CUN.DiploGrados.Domain.Entity
     public class StudentsPayload                // CLASE 100% FUNCIONAL para nombrar los campos del Body JSON
     {
         [JsonPropertyName("master")]
-        public Master Master { get; set; }
+        public List<Master> Master { get; set; }
 
         [JsonPropertyName("identificacion")]
         public string Identificacion { get; set; }
@@ -37,8 +37,8 @@ namespace CUN.DiploGrados.Domain.Entity
         [JsonPropertyName("tipo_documento_acta")]
         public string TipoDocumentoActa { get; set; }
 
-        [JsonIgnore]
-        public StudentsGradeInfo StudentGrade { get; set; }    // Acceso a la data complementaria de ORACLE
+        //[JsonIgnore]
+        //public StudentsGradeInfo StudentGrade { get; set; }    // Acceso a la data complementaria de ORACLE
 
         [JsonPropertyName("dado_en")]
         public string SEDE_GRADO { get; set; }          // Verificar que estos datos sean los correctos -   // Por validar para su integración
@@ -63,23 +63,26 @@ namespace CUN.DiploGrados.Domain.Entity
 
         //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 
-        [JsonIgnore]
-        public string GRADO_FECHA { get; set; }    // Acceso a la data complementaria de ORACLE
+        //[JsonIgnore]
+        //public string GRADO_FECHA { get; set; }    // Acceso a la data complementaria de ORACLE
 
         [JsonPropertyName("dia_texto")]
         public string DiaTexto { get; set; }
 
         [JsonPropertyName("dia_numero")]
-        public int DiaNumero { get; set; }
+        public string DiaNumero { get; set; }
+        //public int DiaNumero { get; set; }
 
         [JsonPropertyName("mes_texto")]
         public string MesTexto { get; set; }
 
         [JsonPropertyName("mes_numero")]
-        public int MesNumero { get; set; }
+        public string MesNumero { get; set; }
+        //public int MesNumero { get; set; }
 
         [JsonPropertyName("anio_numero")]
-        public int AgnoNumero { get; set; }
+        public string AgnoNumero { get; set; }
+        //public int AgnoNumero { get; set; }
 
         [JsonPropertyName("anio_texto")]
         public string AgnoTexto { get; set; }

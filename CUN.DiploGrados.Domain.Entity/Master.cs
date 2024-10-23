@@ -7,20 +7,24 @@ namespace CUN.DiploGrados.Domain.Entity
 {
     public class Master
     {
-        [JsonPropertyName("tipoplantilla")]             // CLASE 100% FUNCIONAL para nombrar los campos del Body JSON
-        public List<string> TipoPlantilla { get; set; }       //"tipoplantilla": "grados, duplicados, honoresCausa"
+        [JsonPropertyName("tipoplantilla")]
+        public string TipoPlantilla { get; set; }
 
-        public Master()
+        // Lista privada con valores predeterminados
+        private static readonly List<string> ValoresPredeterminados = new List<string>
         {
-            // Inicializa la lista con los valores predeterminados
-            TipoPlantilla = new List<string>
-            {
-                "grados",
-                "duplicados",
-                "honores",
-                "Causa",
-                "Opción inválida"
-            };
+            "grados",
+            "duplicados",
+            "honores Causa",
+            "Opción inválida"
+        };
+
+        // Método para obtener los valores predeterminados
+        public static List<string> ObtenerValoresPredeterminados()
+        {
+            return new List<string>(ValoresPredeterminados);
         }
+
+        public Master() { }
     }
 }

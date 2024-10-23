@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -142,25 +143,21 @@ namespace CUN.DiploGrados.Infrastructure.Repository
             // Creamos una nueva instancia de Master
             Master master = new Master();
 
-            // Limpiamos la lista para asegurar que no tenga valores anteriores
-            master.TipoPlantilla.Clear();
-
             // Asignar TipoPlantilla basado en la opción
-            if (opcion == "1")
+            switch (opcion)
             {
-                master.TipoPlantilla.Add("grados");
-            }
-            else if (opcion == "2")
-            {
-                master.TipoPlantilla.Add("duplicados");
-            }
-            else if (opcion == "3")
-            {
-                master.TipoPlantilla.Add("honores Causa");
-            }
-            else
-            {
-                master.TipoPlantilla.Add("Opción inválida");
+                case "1":
+                    master.TipoPlantilla = Master.ObtenerValoresPredeterminados()[0]; // "grados"
+                    break;
+                case "2":
+                    master.TipoPlantilla = Master.ObtenerValoresPredeterminados()[1]; // "duplicados"
+                    break;
+                case "3":
+                    master.TipoPlantilla = Master.ObtenerValoresPredeterminados()[2]; // "honores Causa"
+                    break;
+                default:
+                    master.TipoPlantilla = Master.ObtenerValoresPredeterminados()[3]; // "Opción inválida"
+                    break;
             }
 
             // Devolver la instancia de Master
@@ -170,20 +167,18 @@ namespace CUN.DiploGrados.Infrastructure.Repository
         // CodPrograma es equivalente a la columna PLAN
         public async Task<Payload> GetGradeCertificatesAsync(string studentId, string codPrograma, string nivel, string opcion)
         {
-            Master tipoPlantilla = new Master();
+            Master tipoPlantilla = GetTemplateType(opcion); // Obtener el tipo de plantilla
             Payload payload = new Payload();
             Students student = null;
             StudentsPayload studentPay = new StudentsPayload(); // Payload del estudiante
             StudentsGradeInfo gradeInfo = null;
 
             string url = "https://digisign-backend.onrender.com/api/workflows/NewIntegration";
-            string gender = "Masculino";
             string tipoIdentificacion = "TI";
 
             try
             {
-                // Obtener la plantilla basada en la opción seleccionada
-                tipoPlantilla = GetTemplateType(opcion); // Este método ya devuelve un objeto Master con el valor seleccionado
+                // Obtener el estudiante y la información de grado
                 student = GetStudentByParametersR(codPrograma, studentId);
                 gradeInfo = GetStudentGradeInfo(studentId, nivel);
             }
@@ -203,17 +198,30 @@ namespace CUN.DiploGrados.Infrastructure.Repository
 
                     Guid guid = new Guid("5c0e5a08-1a5f-4f4b-99c7-c3fc8c57da27");
                     payload.Guid = guid;
+                    payload.MasterEndata = "true";
                     payload.Emailkey = "email";
 
-                    // Asignar las propiedades generales del estudiante a studentPay
-                    studentPay.Master =  tipoPlantilla; // Asignar el array de plantillas
+                    // Comprobar si TipoPlantilla tiene un valor no nulo o vacío
+                    string tipoPlantillaValue = !string.IsNullOrEmpty(tipoPlantilla.TipoPlantilla)
+                        ? tipoPlantilla.TipoPlantilla // Usar el valor directamente
+                        : "Opción inválida"; // Valor por defecto si no hay elementos
 
+                    // Configurar el Master y asignar solo el valor de tipoPlantilla como string
+                    studentPay.Master = new List<Master>
+{
+                        new Master
+                        {
+                            TipoPlantilla = tipoPlantillaValue // Asignar directamente el string
+                        }
+                    };
+
+                    // Asignar la información del estudiante
                     studentPay.Identificacion = student?.NUM_IDENTIFICACION;
                     studentPay.NombreEscuela = student?.NOMBRE_ESCUELA;
                     studentPay.Nombres = $"{student?.NOM_TERCERO ?? ""} {student?.SEG_NOMBRE ?? ""}".Trim();
                     studentPay.Apellidos = $"{student?.PRI_APELLIDO ?? ""} {student?.SEG_APELLIDO ?? ""}".Trim();
-                    studentPay.NombresYApellidos = $"{student?.NOM_TERCERO ?? ""} {student?.SEG_NOMBRE ?? ""} {student?.PRI_APELLIDO ?? ""} {student?.SEG_APELLIDO ?? ""}".Trim();
-                    studentPay.Genero = student?.GEN_TERCERO;
+                    studentPay.NombresYApellidos = $"{student?.NOM_TERCERO ?? ""} {student?.SEG_NOMBRE ?? ""} {student?.PRI_APELLIDO ?? ""} {student?.SEG_APELLIDO ?? ""}".Trim() + " PRUEBA";
+                    studentPay.Genero = student?.GEN_TERCERO.ToLower();
                     studentPay.Email = student?.DIR_EMAIL;
                     studentPay.TipoDocumento = tipoIdentificacion;
 
@@ -229,7 +237,7 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                         _ => "Tipo de documento desconocido"
                     };
 
-                    // Asignar la información específica de grado directamente a studentPay
+                    // Asignar la información específica de grado
                     studentPay.SEDE_GRADO = gradeInfo?.SEDE_GRADO;
                     studentPay.SNIES = gradeInfo?.SNIES;
                     studentPay.TITULACION = gradeInfo?.TITULACION;
@@ -241,11 +249,11 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                     // Parsear y asignar la fecha de grado si es válida
                     if (DateTime.TryParse(gradeInfo?.GRADO_FECHA, out DateTime fecha))
                     {
-                        studentPay.DiaNumero = fecha.Day;
+                        studentPay.DiaNumero = fecha.Day.ToString(); // Convertir a string
                         studentPay.DiaTexto = DateConversor.DiaALetras(fecha.Day);
-                        studentPay.MesNumero = fecha.Month;
+                        studentPay.MesNumero = fecha.Month.ToString(); // Convertir a string
                         studentPay.MesTexto = DateConversor.MesEnLetras(fecha.Month);
-                        studentPay.AgnoNumero = fecha.Year;
+                        studentPay.AgnoNumero = fecha.Year.ToString(); // Convertir a string
                         studentPay.AgnoTexto = DateConversor.AñoALetras(fecha.Year);
                     }
                     else
@@ -258,8 +266,17 @@ namespace CUN.DiploGrados.Infrastructure.Repository
                     // Asignar el payload
                     payload.Datos = new StudentsPayload[] { studentPay };
 
-                    // Convertir el payload a JSON
-                    var jsonPayload = JsonSerializer.Serialize(payload);
+                    // Definir las opciones de serialización
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true, // Para una mejor legibilidad (opcional)
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres especiales
+                    };
+
+                    // Convertir el payload a JSON usando las opciones definidas
+                    var jsonPayload = JsonSerializer.Serialize(payload, options);
+
+                    // Crear el contenido del StringContent
                     var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                     using (var httpClient = new HttpClient())
@@ -290,6 +307,8 @@ namespace CUN.DiploGrados.Infrastructure.Repository
 
             return payload;
         }
+
+
 
 
     }

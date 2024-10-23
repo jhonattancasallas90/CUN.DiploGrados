@@ -125,16 +125,13 @@ namespace CUN.DiploGrados.Application.Main
                     return response;
                 }
 
-                // Convertir la opción a int si es necesario
-                int opcionInt = int.Parse(opcion);
-
                 // Obtener un solo Master en lugar de un array
-                Master payload = _studentsDomain.GetTemplateType(opcionInt.ToString());
+                Master payload = _studentsDomain.GetTemplateType(opcion);
 
                 response.Data = payload;  // Asignar el objeto Master directamente
 
-                // Validar si el objeto tiene datos válidos
-                if (payload != null && payload.TipoPlantilla != null && payload.TipoPlantilla.Count > 0)
+                // Validar si el objeto tiene un dato válido
+                if (payload != null && !string.IsNullOrEmpty(payload.TipoPlantilla))
                 {
                     response.IsSuccess = true;
                     response.Message = "Búsqueda exitosa.";
