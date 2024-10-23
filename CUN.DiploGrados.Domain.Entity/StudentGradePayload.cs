@@ -27,5 +27,8 @@ namespace CUN.DiploGrados.Domain.Entity
 
         [JsonPropertyName("LIBRO")]
         public string Libro { get; set; }
+
+        [JsonPropertyName("GRADO_FECHA")]                             //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+        public string GRADO_FECHA { get; set; }
     }
 }

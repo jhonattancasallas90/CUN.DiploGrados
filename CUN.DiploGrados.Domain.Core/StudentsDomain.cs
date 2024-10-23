@@ -22,7 +22,7 @@ namespace CUN.DiploGrados.Domain.Core
 
         public Students GetStudentByParameters(string studentId, string codPrograma) 
         {
-            return _unitOfWork.Students.GetStudentByParameters(studentId, codPrograma);
+            return _unitOfWork.Students.GetStudentByParametersR(studentId, codPrograma);
         }
 
         public StudentsGradeInfo GetStudentsGradeInfo(string studentId, string nivel)

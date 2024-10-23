@@ -1,6 +1,7 @@
 ﻿using CUN.DiploGrados.Application.DTO;
 using CUN.DiploGrados.Domain.Entity;
 using CUN.DiploGrados.Transversal.Common;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;

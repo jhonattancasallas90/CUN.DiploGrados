@@ -17,10 +17,10 @@ namespace CUN.DiploGrados.Application.DTO
         [JsonPropertyName("escuela")]
         public string NombreEscuela { get; set; }
 
-        //[JsonPropertyName("nombres")]
+        [JsonIgnore]
         public string Nombres { get; set; }
 
-        //[JsonPropertyName("apellidos")]
+        [JsonIgnore]
         public string Apellidos { get; set; }
 
         [JsonPropertyName("nombres")]
@@ -61,6 +61,9 @@ namespace CUN.DiploGrados.Application.DTO
 
         [JsonPropertyName("libro")]
         public string LIBRO { get; set; }
+
+        [JsonIgnore]
+        public string GradoFecha { get; set; }
 
         //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
         [JsonPropertyName("dia_texto")]

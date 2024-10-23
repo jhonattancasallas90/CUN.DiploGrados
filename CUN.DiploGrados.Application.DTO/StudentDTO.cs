@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
 namespace CUN.DiploGrados.Application.DTO
 {
@@ -18,16 +19,16 @@ namespace CUN.DiploGrados.Application.DTO
         [JsonPropertyName("NOMBRE_ESCUELA")]
         public string NOMBRE_ESCUELA { get; set; }
 
-        [JsonPropertyName("NOM_TERCERO")]
+        [JsonIgnore]
         public string NOM_TERCERO { get; set; }
 
-        [JsonPropertyName("SEG_NOMBRE")]
+        [JsonIgnore]
         public string SEG_NOMBRE { get; set; }
 
-        [JsonPropertyName("PRI_APELLIDO")]
+        [JsonIgnore]
         public string PRI_APELLIDO { get; set; }
 
-        [JsonPropertyName("SEG_APELLIDO")]
+        [JsonIgnore]
         public string SEG_APELLIDO { get; set; }
 
         [JsonPropertyName("GEN_TERCERO")]
@@ -62,6 +63,9 @@ namespace CUN.DiploGrados.Application.DTO
         public string LIBRO { get; set; }
 
         //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+
+        [JsonIgnore]    // No eliminar esta instancia
+        public string GradoFecha { get; set; }    // Acceso a la data complementaria de ORACLE
 
         [JsonPropertyName("DiaTexto")]
         public string DiaTexto { get; set; }

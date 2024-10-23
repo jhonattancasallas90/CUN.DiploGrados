@@ -27,5 +27,10 @@ namespace CUN.DiploGrados.Application.DTO
 
         [JsonPropertyName("LIBRO")]
         public string LIBRO { get; set; }
+
+        [JsonIgnore]
+        public string GradoFecha { get; set; }
+
+
     }
 }

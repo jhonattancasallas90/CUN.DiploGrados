@@ -127,10 +127,14 @@ namespace CUN.DiploGrados.Application.Main
 
                 // Convertir la opción a int si es necesario
                 int opcionInt = int.Parse(opcion);
-                Master payload = _studentsDomain.GetTemplateType(opcionInt.ToString());
-                response.Data = payload;
 
-                if (payload != null && !string.IsNullOrEmpty(payload.TipoPlantilla)) // Verifica el campo TipoPlantilla
+                // Obtener un solo Master en lugar de un array
+                Master payload = _studentsDomain.GetTemplateType(opcionInt.ToString());
+
+                response.Data = payload;  // Asignar el objeto Master directamente
+
+                // Validar si el objeto tiene datos válidos
+                if (payload != null && payload.TipoPlantilla != null && payload.TipoPlantilla.Count > 0)
                 {
                     response.IsSuccess = true;
                     response.Message = "Búsqueda exitosa.";
@@ -144,8 +148,7 @@ namespace CUN.DiploGrados.Application.Main
             catch (Exception e)
             {
                 response.IsSuccess = false;
-                response.Message = $"Error: {e.Message}"; // Considera registrar la excepción aquí
-                                                          // logger.LogError(e, "Error al obtener el tipo de plantilla."); // Ejemplo de registro
+                response.Message = $"Error: {e.Message}"; // Puedes registrar el error aquí también
             }
             return response;
         }
@@ -159,18 +162,18 @@ namespace CUN.DiploGrados.Application.Main
                 // Llamar a la capa de dominio de forma asíncrona usando await
                 Payload payload = await _studentsDomain.GetGradeCertificatesAsync(studentId, codPrograma, nivel, opcion);
 
-                // Mapear el payload a la respuesta si tienes un mapper, de lo contrario asignar directamente
+                // Mapear el payload a la respuesta
                 response.Data = _mapper.Map<Payload>(payload); // Si usas AutoMapper, sino asigna directamente
 
-                if (response.Data != null)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Certificados de grado obtenidos correctamente.";
-                }
-                else
+                // Si no se encuentran datos, asignar el mensaje de error
+                if (response.Data == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "No se encontraron certificados de grado.";
+                }
+                else
+                {
+                    response.IsSuccess = true; // Aquí solo se marca como exitoso, no se asigna mensaje
                 }
             }
             catch (Exception e)
@@ -179,8 +182,9 @@ namespace CUN.DiploGrados.Application.Main
                 response.Message = $"Error: {e.Message}";
             }
 
-            return response;
+            return response; // Retornar la respuesta
         }
+
 
 
     }

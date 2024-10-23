@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace CUN.DiploGrados.Domain.Entity
 {
-    public class Students : StudentsGradeInfo
+    public class Students
     {
         [JsonPropertyName("master")]
         public Master Master { get; set; }
@@ -16,19 +16,19 @@ namespace CUN.DiploGrados.Domain.Entity
         [JsonPropertyName("escuela")]
         public string NOMBRE_ESCUELA { get; set; }
 
-        [JsonIgnore]    // No eliminar esta instancia
+        [JsonPropertyName("NOM_TERCERO")]
         public string NOM_TERCERO { get; set; }
 
-        [JsonIgnore]    // No eliminar esta instancia
+        [JsonPropertyName("SEG_NOMBRE")]
         public string SEG_NOMBRE { get; set; }
 
-        [JsonIgnore]    // No eliminar esta instancia
+        [JsonPropertyName("PRI_APELLIDO")]
         public string PRI_APELLIDO { get; set; }
 
-        [JsonIgnore]    // No eliminar esta instancia
+        [JsonPropertyName("SEG_APELLIDO")]
         public string SEG_APELLIDO { get; set; }
 
-        [JsonPropertyName("gen_tercero")]
+        [JsonPropertyName("GEN_TERCERO")]
         public string GEN_TERCERO { get; set; }
 
         [JsonPropertyName("email")]
@@ -60,7 +60,8 @@ namespace CUN.DiploGrados.Domain.Entity
         [JsonPropertyName("libro")]
         public string LIBRO { get; set; }
 
-        //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+        [JsonIgnore]    // No eliminar esta instancia
+        public string GRADO_FECHA { get; set; }    // Acceso a la data complementaria de ORACLE
 
         [JsonPropertyName("dia_texto")]
         public string DiaTexto { get; set; }

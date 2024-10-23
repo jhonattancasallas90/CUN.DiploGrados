@@ -5,79 +5,83 @@ using System.Text.Json.Serialization;
 
 namespace CUN.DiploGrados.Domain.Entity
 {
-    public class StudentsPayload
+    public class StudentsPayload                // CLASE 100% FUNCIONAL para nombrar los campos del Body JSON
     {
-        //[JsonPropertyName("master")]
+        [JsonPropertyName("master")]
         public Master Master { get; set; }
 
-        //[JsonPropertyName("identificacion")]
+        [JsonPropertyName("identificacion")]
         public string Identificacion { get; set; }
 
-        //[JsonPropertyName("escuela")]
+        [JsonPropertyName("escuela")]
         public string NombreEscuela { get; set; }
 
-        //[JsonPropertyName("nombres")]
+        [JsonIgnore]
         public string Nombres { get; set; }
 
-        //[JsonPropertyName("apellidos")]
+        [JsonIgnore]
         public string Apellidos { get; set; }
 
-        //[JsonPropertyName("nombres")]
+        [JsonPropertyName("nombres")]
         public string NombresYApellidos {  get; set; }
 
-        //[JsonPropertyName("gen_tercero")]
+        [JsonPropertyName("gen_tercero")]
         public string Genero { get; set; }
 
-        //[JsonPropertyName("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        //[JsonPropertyName("tipo_documento")]
+        [JsonPropertyName("tipo_documento")]
         public string TipoDocumento { get; set; }
 
-        //[JsonPropertyName("tipo_documento_acta")]
+        [JsonPropertyName("tipo_documento_acta")]
         public string TipoDocumentoActa { get; set; }
 
-        //[JsonIgnore]    // No eliminar esta instancia
+        [JsonIgnore]
         public StudentsGradeInfo StudentGrade { get; set; }    // Acceso a la data complementaria de ORACLE
 
-        //[JsonPropertyName("dado_en")]
+        [JsonPropertyName("dado_en")]
         public string SEDE_GRADO { get; set; }          // Verificar que estos datos sean los correctos -   // Por validar para su integración
 
-        //[JsonPropertyName("snies")]
+        [JsonPropertyName("snies")]
         public string SNIES { get; set; }               //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 
-        //[JsonPropertyName("carrera_o_titulo")]
+        [JsonPropertyName("carrera_o_titulo")]
         public string TITULACION { get; set; }          //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 
-        //[JsonPropertyName("acta")]
+        [JsonPropertyName("acta")]
         public string ACTA { get; set; }                //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 
-        //[JsonPropertyName("registro")]
+        [JsonPropertyName("registro")]
         public string NRO_REGISTRO { get; set; }        //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 
-        //[JsonPropertyName("folio")]
+        [JsonPropertyName("folio")]
         public string FOLIO { get; set; }               //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
 
-        //[JsonPropertyName("libro")]
+        [JsonPropertyName("libro")]
         public string LIBRO { get; set; }
 
         //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
-        //[JsonPropertyName("dia_texto")]
+
+        [JsonIgnore]
+        public string GRADO_FECHA { get; set; }    // Acceso a la data complementaria de ORACLE
+
+        [JsonPropertyName("dia_texto")]
         public string DiaTexto { get; set; }
 
-        //[JsonPropertyName("dia_numero")]
+        [JsonPropertyName("dia_numero")]
         public int DiaNumero { get; set; }
 
-        //[JsonPropertyName("mes_texto")]
+        [JsonPropertyName("mes_texto")]
         public string MesTexto { get; set; }
 
-        //[JsonPropertyName("mes_numero")]
+        [JsonPropertyName("mes_numero")]
         public int MesNumero { get; set; }
 
-        //[JsonPropertyName("anio_numero")]
+        [JsonPropertyName("anio_numero")]
         public int AgnoNumero { get; set; }
 
-        //[JsonPropertyName("anio_texto")]
+        [JsonPropertyName("anio_texto")]
         public string AgnoTexto { get; set; }
 
     }

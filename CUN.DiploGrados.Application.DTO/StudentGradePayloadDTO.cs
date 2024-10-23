@@ -27,5 +27,9 @@ namespace CUN.DiploGrados.Application.DTO
 
         [JsonPropertyName("LIBRO")]                             //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
         public string LIBRO { get; set; }
+
+        [JsonIgnore]                                              //Nuevos campos integrados de acuerdo a reunión con Lorena Diplogrados
+        public string GradoFecha { get; set; }
+
     }
 }
